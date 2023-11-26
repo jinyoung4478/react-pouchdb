@@ -1,30 +1,39 @@
-# React + TypeScript + Vite
+# React + PouchDB
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 환경 세팅
 
-Currently, two official plugins are available:
+### CouchDB with Docker
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Create `docker-compose.yml`
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```yml
+version: '3'
+services:
+  couchserver:
+    image: couchdb
+    restart: always
+    ports:
+      - '5984:5984'
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=YOURPASSWORD
+    volumes:
+      - ./dbdata:/opt/couchdb/data
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Run docker compose
+   `docker-compose up -d`
+
+3. Access CouchDB admin
+   `http://localhost:5984/_utils/`
+
+4. Create `_users` Database
+
+<img width="742" alt="image" src="https://github.com/jinyoung4478/react-pouchdb/assets/102174146/48ea02c0-603b-4f22-8128-dad13d421d9d">
+
+### Client 세팅
+
+1. Clone project `https://github.com/jinyoung4478/react-pouchdb.git`
+2. Install dependencies: yarn
+
+3. Start the development server: yarn dev
